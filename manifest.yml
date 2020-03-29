@@ -1,0 +1,6 @@
+---
+applications:
+  - name: covid19-api
+    memory: 256M
+    buildpacks:
+      - python_buildpack
