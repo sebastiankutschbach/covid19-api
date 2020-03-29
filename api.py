@@ -1,8 +1,14 @@
 from json import load, dumps
 import falcon
+import wget
 
-with open('data.json') as f:
-    data = load(f)['records']
+
+def readJson(file):
+    with open(file) as f:
+        return load(f)['records']
+
+
+data = readJson('data.json')
 
 
 class CovidResource(object):
@@ -18,7 +24,13 @@ class CovidResource(object):
                 r for r in filtered_data if r['dateRep'] == date]
         res.body = dumps(filtered_data)
 
+    def on_post(self, req, res):
+        global data
+        file = wget.download(
+            'https://opendata.ecdc.europa.eu/covid19/casedistribution/json/', out='new_data.json')
+        data = readJson(file)
+
 
 app = falcon.API()
-things = CovidResource()
-app.add_route('/', things)
+covid = CovidResource()
+app.add_route('/', covid)
