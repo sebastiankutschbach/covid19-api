@@ -2,10 +2,11 @@ from json import load, dumps
 import falcon
 from falcon.http_status import HTTPStatus
 import wget
+import codecs
 
 
 def readJson(file):
-    with open(file) as f:
+    with open(file, encoding='utf-8-sig') as f:
         return load(f)['records']
 
 
